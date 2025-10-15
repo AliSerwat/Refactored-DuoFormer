@@ -113,8 +113,9 @@ ipython_config.py
 #Pipfile.lock
 
 # pip-tools
-#   Keep requirements.txt in version control for reproducibility
-#   DO NOT ignore: requirements.txt, requirements.in
+#   requirements.txt is auto-generated and should be ignored
+#   Keep requirements.in in version control for reproducibility
+requirements.txt
 # pip-compile cache (if any)
 .pip-tools-cache/
 
