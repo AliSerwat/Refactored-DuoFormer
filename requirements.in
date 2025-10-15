@@ -1,0 +1,51 @@
+# 🧠 Refactored DuoFormer - Core Dependencies
+# General medical imaging implementation
+#
+# This file lists the direct dependencies for the project.
+# Use pip-compile to generate requirements.txt with pinned versions.
+#
+# Original work: https://github.com/xiaoyatang/duoformer_TCGA
+
+# Deep Learning Framework
+torch
+torchvision
+
+# Vision Transformer Components
+timm
+
+# Tensor Operations
+einops
+
+# Visualization
+matplotlib
+seaborn
+
+# Numerical Computing
+numpy
+scipy
+
+# Image Processing
+pillow
+
+# Progress Bars
+tqdm
+
+# Machine Learning Utilities
+scikit-learn
+
+# Data Handling
+pandas
+
+# Configuration
+pyyaml
+
+# Monitoring and Logging
+tensorboard
+
+# Notebook Support
+jupyter
+ipywidgets
+
+# Optional: CUDA-specific installations
+# torch torchvision --index-url https://download.pytorch.org/whl/cu118
+

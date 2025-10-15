@@ -1,0 +1,49 @@
+# Refactored DuoFormer - Lightweight Configuration
+# For quick experiments and testing on any medical imaging dataset
+
+exp_name: duoformer_lightweight
+seed: 42
+device: cuda
+mixed_precision: true
+
+backbone:
+  name: resnet18
+  pretrained: true
+  freeze: false
+  weights: DEFAULT
+
+transformer:
+  depth: 6
+  embed_dim: 384
+  num_heads: 6
+  mlp_ratio: 4.0
+  attn_drop_rate: 0.0
+  proj_drop_rate: 0.0
+
+multiscale:
+  num_layers: 2
+  num_patches: 49
+  proj_dim: 384
+
+training:
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  optimizer: adamw
+  scheduler: cosine
+  epochs: 50
+  batch_size: 64
+  num_workers: 4
+  patience: 15
+
+data:
+  dataset_name: medical_imaging
+  data_dir: ./data
+  num_classes: 10  # Adjust for your task
+  image_size: 224
+  use_augmentation: true
+
+logging:
+  log_dir: ./logs
+  tensorboard_dir: ./runs
+  log_interval: 10
+
