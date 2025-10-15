@@ -8,10 +8,14 @@
 
 **Production-ready, refactored implementation of DuoFormer for general medical image classification with enterprise-grade MLOps practices.**
 
-> 💡 **Purpose**: Refactored for general medical imaging use cases including histopathology, radiology, dermatology, and more
-> 🔬 **Original Repository**: [xiaoyatang/duoformer_TCGA](https://github.com/xiaoyatang/duoformer_TCGA)
-> 📄 **Paper**: [Hierarchical Vision Transformer for Medical Image Segmentation (MIDL 2025)](https://arxiv.org/abs/2506.12982)
-> 🚀 **This Repository**: [AliSerwat/Refactored-DuoFormer](https://github.com/AliSerwat/Refactored-DuoFormer)
+- 💡 **Purpose**:
+    - Refactored for general medical imaging use cases including histopathology, radiology, dermatology, and more
+- 🔬 **Original Repository**:
+    - [xiaoyatang/duoformer_TCGA](https://github.com/xiaoyatang/duoformer_TCGA)
+- 📄 **Paper**:
+    - [Hierarchical Vision Transformer for Medical Image Segmentation (MIDL 2025)](https://arxiv.org/abs/2506.12982)
+- 🚀 **This Repository**:
+    - [AliSerwat/Refactored-DuoFormer](https://github.com/AliSerwat/Refactored-DuoFormer)
 
 ---
 
