@@ -27,7 +27,7 @@ def test_minimal_model_creation():
             num_classes=3,
             num_layers=2,
             num_patches=49,
-            proj_dim=64,
+            proj_dim=64,  # Make proj_dim match embed_dim
             backbone="r18",
             pretrained=False,
         )
@@ -54,6 +54,8 @@ def test_minimal_forward_pass():
             num_heads=2,
             num_classes=3,
             num_layers=2,
+            num_patches=49,
+            proj_dim=64,  # Make proj_dim match embed_dim
             backbone="r18",
             pretrained=False,
         )

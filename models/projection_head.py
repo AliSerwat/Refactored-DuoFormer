@@ -86,18 +86,15 @@ class Projection(nn.Module):
                 )
                 self._initialize_weights(self.proj_heads)
             elif num_layers == 2:
-                # self.proj_heads3 = nn.Conv2d(512, proj_dim, kernel_size=(1,1),stride=(1,1))
+                # For ResNet-18 with 2 layers, use layer3 (256 channels) and layer4 (512 channels)
                 self.proj_heads2 = nn.Conv2d(
                     256, proj_dim, kernel_size=(1, 1), stride=(1, 1)
                 )
-                self.proj_heads1 = nn.Conv2d(
-                    128, proj_dim, kernel_size=(1, 1), stride=(1, 1)
+                self.proj_heads3 = nn.Conv2d(
+                    512, proj_dim, kernel_size=(1, 1), stride=(1, 1)
                 )
-                # self.proj_heads0 = nn.Conv2d(64, proj_dim, kernel_size=(1,1),stride=(1,1))
-                # self._initialize_weights(self.proj_heads3)
                 self._initialize_weights(self.proj_heads2)
-                self._initialize_weights(self.proj_heads1)
-                # self._initialize_weights(self.proj_heads0)
+                self._initialize_weights(self.proj_heads3)
             elif num_layers == 3:
                 # self.proj_heads3 = nn.Conv2d(512, proj_dim, kernel_size=(1,1),stride=(1,1))
                 self.proj_heads0 = nn.Conv2d(
@@ -180,14 +177,18 @@ class Projection(nn.Module):
             proj_features = {}
             for k, fea in x.items():
                 N, C, H, W = fea.shape
-                if k == "3":
+                if k == "3" and hasattr(self, 'proj_heads3'):
                     proj_features[k] = self.proj_heads3(fea)
-                elif k == "2":
+                elif k == "2" and hasattr(self, 'proj_heads2'):
                     proj_features[k] = self.proj_heads2(fea)
-                elif k == "1":
+                elif k == "1" and hasattr(self, 'proj_heads1'):
                     proj_features[k] = self.proj_heads1(fea)
-                elif k == "0":
+                elif k == "0" and hasattr(self, 'proj_heads0'):
                     proj_features[k] = self.proj_heads0(fea)
+                else:
+                    # Handle cases where the requested projection head doesn't exist
+                    # This can happen with different backbone configurations
+                    raise AttributeError(f"Projection head 'proj_heads{k}' not available for this configuration")
         else:
             proj_features = self.proj_heads(x)
         return proj_features

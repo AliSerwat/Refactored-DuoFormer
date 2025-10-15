@@ -150,8 +150,6 @@ class MyModel_no_extra_params(nn.Module):
             init_values=None,
             num_classes=num_classes,
             num_patches=num_patches,
-            scale_token=scale_token,
-            patch_attn=patch_attn,
         )
         print("✅ Multi-scale transformer initialized")
 
@@ -267,15 +265,22 @@ class MyModel_no_extra_params(nn.Module):
                 )
 
     def get_features(self, x):
-        layers = []
-        for i in range(4):  # self.num_layers
-            layers.append(str(7 - i))
-        # layers = ['4','5'] # '5','4'
+        """Extract multi-scale features from backbone."""
         features = {}
-        for name, module in list(self.resnet_projector.named_children()):
+
+        if self.backbone == "r18":
+            # ResNet-18 sliced model: 0=conv1, 1=bn1, 2=relu, 3=maxpool, 4=layer1, 5=layer2, 6=layer3, 7=layer4
+            # For num_layers=2, we want layer3 (6) and layer4 (7) -> keys "2" and "3"
+            layer_mapping = {"6": "2", "7": "3"}
+        else:
+            # ResNet-50 layer mapping: layer1->0, layer2->1, layer3->2, layer4->3
+            layer_mapping = {"layer1": "0", "layer2": "1", "layer3": "2", "layer4": "3"}
+
+        for name, module in self.resnet_projector.named_children():
             x = module(x)
-            if name in layers:
-                features[str(int(name) - 4)] = x
+            if name in layer_mapping:
+                features[layer_mapping[name]] = x
+
         return features
 
     def forward(self, x):

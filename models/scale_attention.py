@@ -134,7 +134,7 @@ class ScaleFormer(nn.Module):
             torch.randn(1, 1, 1, embed_dim)
         )  # 1,49,1,embed_dim not good as the default
         if scales == 2:
-            self.fea_dim = 6  # 6
+            self.fea_dim = 6  # 5 patches from concatenation + 1 channel token
         elif scales == 3:
             self.fea_dim = 22
         elif scales == 4:
@@ -291,7 +291,7 @@ class MultiscaleFormer(nn.Module):
         )
 
         if scales == 2:
-            self.fea_dim = 21  # 6
+            self.fea_dim = 6  # 5 patches from concatenation + 1 channel token
         elif scales == 3:
             self.fea_dim = 22  # 22,82,70,85
         elif scales == 4:

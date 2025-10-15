@@ -233,8 +233,23 @@ class ModelConfig:
 
     def to_yaml(self, yaml_path: str):
         """Save configuration to YAML file."""
+        config_dict = self.to_dict()
+
+        # Convert pathlib.Path objects to strings for YAML serialization
+        def convert_paths(obj):
+            if isinstance(obj, dict):
+                return {k: convert_paths(v) for k, v in obj.items()}
+            elif isinstance(obj, list):
+                return [convert_paths(item) for item in obj]
+            elif hasattr(obj, '__fspath__'):  # pathlib.Path objects
+                return str(obj)
+            else:
+                return obj
+
+        config_dict = convert_paths(config_dict)
+
         with open(yaml_path, "w") as f:
-            yaml.dump(self.to_dict(), f, default_flow_style=False)
+            yaml.dump(config_dict, f, default_flow_style=False)
 
     def to_json(self, json_path: str):
         """Save configuration to JSON file."""
