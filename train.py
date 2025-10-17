@@ -42,7 +42,7 @@ from utils import (
     get_optimal_num_workers,
     print_device_info,
 )
-from config import ModelConfig, DEFAULT_CONFIG
+from duoformer.config import ModelConfig, DEFAULT_CONFIG
 
 
 def set_seed(seed: int):

@@ -63,7 +63,7 @@ def example_configuration():
     print("Example 2: Configuration Management")
     print("=" * 60)
 
-    from config import ModelConfig, DEFAULT_CONFIG, LIGHTWEIGHT_CONFIG
+    from duoformer.config import ModelConfig, DEFAULT_CONFIG, LIGHTWEIGHT_CONFIG
 
     # Use default config
     config = DEFAULT_CONFIG
@@ -178,7 +178,7 @@ def example_config_export():
     print("=" * 60)
 
     try:
-        from config import ModelConfig, DEFAULT_CONFIG
+        from duoformer.config import ModelConfig, DEFAULT_CONFIG
 
         # Modify config
         config = DEFAULT_CONFIG

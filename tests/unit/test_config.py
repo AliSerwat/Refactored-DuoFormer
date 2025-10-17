@@ -12,7 +12,7 @@ import tempfile
 # Add project root
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from config import ModelConfig, DEFAULT_CONFIG, LIGHTWEIGHT_CONFIG
+from duoformer.config import ModelConfig, DEFAULT_CONFIG, LIGHTWEIGHT_CONFIG
 
 
 def test_config_creation():
@@ -26,7 +26,7 @@ def test_config_creation():
 
 def test_config_validation():
     """Test config validation."""
-    from config import TransformerConfig
+    from duoformer.config import TransformerConfig
 
     # Valid config
     config = TransformerConfig(depth=12, embed_dim=768, num_heads=12)
