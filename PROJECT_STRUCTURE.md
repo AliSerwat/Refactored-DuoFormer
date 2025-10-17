@@ -250,7 +250,7 @@ from duoformer.utils.device import setup_device_environment
 # Testing tools
 python tools/testing/health_check.py
 python tools/testing/check_system.py
-python tools/testing/verify_installation.py
+python scripts/verify_installation.py
 
 # DevOps tools
 python tools/devops/setup_environment.py
