@@ -1,0 +1,102 @@
+{
+  "summary": {
+    "repository": "Refactored-DuoFormer",
+    "audit_date": "2025-10-17T11:57:31.057159",
+    "total_findings": 4,
+    "critical_findings": 1,
+    "high_findings": 1,
+    "medium_findings": 1,
+    "low_findings": 1,
+    "tests_passing": true,
+    "formatting_applied": true,
+    "type_checking_clean": true
+  },
+  "findings": [
+    {
+      "file_path": "src/duoformer/utils/__init__.py",
+      "line_number": null,
+      "severity": "Critical",
+      "type": "import_conflict",
+      "description": "Module name conflict: Source file found twice under different module names",
+      "repro_command": "python -m mypy src/duoformer/utils/__init__.py",
+      "impact": "Prevents proper type checking and imports",
+      "fix_suggestion": "Rename or restructure module to avoid naming conflicts"
+    },
+    {
+      "file_path": "Multiple files",
+      "line_number": null,
+      "severity": "High",
+      "type": "formatting",
+      "description": "8 files need black formatting (non-behavioral)",
+      "repro_command": "python -m black --check .",
+      "impact": "Inconsistent code formatting across codebase",
+      "fix_suggestion": "Run black formatter on affected files"
+    },
+    {
+      "file_path": "src/refactored_duoformer.egg-info/",
+      "line_number": null,
+      "severity": "Medium",
+      "type": "obsolete_files",
+      "description": "Build artifacts should be in .gitignore",
+      "repro_command": "ls -la src/refactored_duoformer.egg-info/",
+      "impact": "Unnecessary files in version control",
+      "fix_suggestion": "Ensure .gitignore excludes egg-info directory"
+    },
+    {
+      "file_path": "tests/",
+      "line_number": null,
+      "severity": "Low",
+      "type": "test_organization",
+      "description": "All tests passing but could verify integration tests",
+      "repro_command": "python tests/run_tests.py --integration",
+      "impact": "May miss integration issues",
+      "fix_suggestion": "Run full test suite including integration tests"
+    }
+  ],
+  "redundancies": [
+    {
+      "type": "obsolete_egg_info",
+      "description": "Build artifacts in src/refactored_duoformer.egg-info/",
+      "action": "Should be excluded by .gitignore (already correctly excluded)",
+      "files_affected": [
+        "src/refactored_duoformer.egg-info/"
+      ]
+    }
+  ],
+  "devops_actions": [
+    {
+      "type": "ci_workflows",
+      "description": "GitHub Actions workflows exist and are configured",
+      "status": "Already implemented",
+      "files": [
+        ".github/workflows/ci-cd.yml",
+        ".github/workflows/type-check.yml"
+      ]
+    },
+    {
+      "type": "pre_commit",
+      "description": "Pre-commit configuration exists",
+      "status": "Already implemented",
+      "files": [
+        ".pre-commit-config.yaml"
+      ]
+    }
+  ],
+  "obsolete_files": [
+    {
+      "file": "src/refactored_duoformer.egg-info/",
+      "reason": "Build artifacts should not be in version control",
+      "action": "Ensure .gitignore excludes this (already correctly configured)"
+    }
+  ],
+  "patches": {},
+  "commands": [
+    "git checkout housekeeping/auto-fixes-backup",
+    "git checkout -b housekeeping/auto-fixes housekeeping/auto-fixes-backup",
+    "git cherry-pick 0dff66e8c969d4676dcd4131e953469b5b2f75cc..HEAD",
+    "echo \"\u2705 Housekeeping fixes applied successfully\"",
+    "echo \"\ud83d\udd0d Review changes and run tests before pushing\"",
+    "echo \"\ud83d\ude80 To push: git push origin housekeeping/auto-fixes\"",
+    "echo \"\ud83d\udcdd To create PR: gh pr create --title \"chore: automated repository housekeeping\" --body-file REPO_HOUSEKEEPING_PR.md\""
+  ]
+}
