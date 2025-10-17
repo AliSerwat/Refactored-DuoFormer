@@ -83,9 +83,9 @@ class DuoFormerModel(nn.Module):
 
         # Input validation
         assert depth is not None and depth > 0, "depth must be a positive integer"
-        assert embed_dim > 0 and embed_dim % num_heads == 0, (
-            f"embed_dim ({embed_dim}) must be positive and divisible by num_heads ({num_heads})"
-        )
+        assert (
+            embed_dim > 0 and embed_dim % num_heads == 0
+        ), f"embed_dim ({embed_dim}) must be positive and divisible by num_heads ({num_heads})"
         assert num_heads > 0, "num_heads must be positive"
         assert num_layers in [
             2,
@@ -140,7 +140,9 @@ class DuoFormerModel(nn.Module):
         elif backbone == "r50_Swav":
             # Use standard ResNet-50 instead of legacy SwAV implementation
             self.resnet_projector = nn.Sequential(
-                *list(models.resnet50(weights=ResNet50_Weights.IMAGENET1K_V2).children())[:-2]
+                *list(
+                    models.resnet50(weights=ResNet50_Weights.IMAGENET1K_V2).children()
+                )[:-2]
             )
             print("✅ ResNet-50 loaded with ImageNet weights (SwAV not available)")
 

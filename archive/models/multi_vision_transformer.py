@@ -160,6 +160,6 @@ class MultiscaleTransformer(VisionTransformer):
         #     x = self.norm(x)
         #     cls_token = x[:, 0]
 
-        return (
-            self.head(cls_token).squeeze()
-        )  # Assuming CLS carries information of patches infusing multiscale features.
+        return self.head(
+            cls_token
+        ).squeeze()  # Assuming CLS carries information of patches infusing multiscale features.

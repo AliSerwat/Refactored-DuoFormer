@@ -58,9 +58,9 @@ class MyModel_no_extra_params(nn.Module):
 
         # Input validation
         assert depth is not None and depth > 0, "depth must be a positive integer"
-        assert embed_dim > 0 and embed_dim % num_heads == 0, (
-            f"embed_dim ({embed_dim}) must be positive and divisible by num_heads ({num_heads})"
-        )
+        assert (
+            embed_dim > 0 and embed_dim % num_heads == 0
+        ), f"embed_dim ({embed_dim}) must be positive and divisible by num_heads ({num_heads})"
         assert num_heads > 0, "num_heads must be positive"
         assert num_layers in [
             2,

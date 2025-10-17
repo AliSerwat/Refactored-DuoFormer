@@ -8,7 +8,7 @@
 - **Description**: Arbitrary file overwrite vulnerability in pip's fallback extraction path
 - **Impact**: Successful exploitation enables arbitrary file overwrite outside the build/extraction directory
 - **Status**: ⚠️ **REQUIRES IMMEDIATE ACTION**
-- **Action Required**: 
+- **Action Required**:
   - Upgrade pip to version 25.3+ when available
   - Monitor for security updates
   - Consider using `--no-deps` flag for pip installs until fixed
@@ -43,7 +43,7 @@
 - **Description**: Replaced legacy SwAV with standard ResNet-50
 - **Impact**: May affect model performance for specific use cases
 - **Status**: ✅ **ACCEPTABLE RISK**
-- **Mitigation**: 
+- **Mitigation**:
   - Standard ResNet-50 provides good baseline performance
   - Can be reverted if specific SwAV functionality is needed
   - Well-documented change in CHANGELOG.md
