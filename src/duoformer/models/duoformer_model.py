@@ -138,10 +138,11 @@ class DuoFormerModel(nn.Module):
                 )
                 print("⚠️  ResNet-18 initialized with random weights")
         elif backbone == "r50_Swav":
-            self.resnet_projector = resnet50FeatureExtractor(
-                pretrained=pretrained, progress=False, key="SwAV"
+            # Use standard ResNet-50 instead of legacy SwAV implementation
+            self.resnet_projector = nn.Sequential(
+                *list(models.resnet50(weights=ResNet50_Weights.IMAGENET1K_V2).children())[:-2]
             )
-            print("✅ ResNet-50 loaded with self-supervised weights (SwAV pretrained)")
+            print("✅ ResNet-50 loaded with ImageNet weights (SwAV not available)")
 
         if freeze_backbone:
             for param in self.resnet_projector.parameters():
