@@ -1,0 +1,22 @@
+# Global owners
+* @AliSerwat
+
+# Core modules
+src/duoformer/ @AliSerwat
+tests/ @AliSerwat
+
+# Configuration files
+pyproject.toml @AliSerwat
+mypy.ini @AliSerwat
+.pre-commit-config.yaml @AliSerwat
+
+# Documentation
+README.md @AliSerwat
+docs/ @AliSerwat
+
+# CI/CD
+.github/ @AliSerwat
+
+# Dependencies
+requirements.in @AliSerwat
+requirements.txt @AliSerwat
