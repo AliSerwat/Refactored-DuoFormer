@@ -17,7 +17,7 @@ def test_minimal_model_creation():
 
     try:
         import torch
-        from models import build_model_no_extra_params
+        from duoformer.models import build_model_no_extra_params
 
         # Absolute minimal config for speed
         model = build_model_no_extra_params(
@@ -46,7 +46,7 @@ def test_minimal_forward_pass():
 
     try:
         import torch
-        from models import build_model_no_extra_params
+        from duoformer.models import build_model_no_extra_params
 
         model = build_model_no_extra_params(
             depth=2,

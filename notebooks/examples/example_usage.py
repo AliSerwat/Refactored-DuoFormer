@@ -32,7 +32,7 @@ def example_model_creation():
     print("Example 1: Model Creation")
     print("=" * 60)
 
-    from models import build_model_no_extra_params, count_parameters
+    from duoformer.models import build_model_no_extra_params, count_parameters
 
     # Create model
     model = build_model_no_extra_params(
@@ -119,7 +119,7 @@ def example_training():
     try:
         import torch
         import torch.nn as nn
-        from models import build_model_no_extra_params
+        from duoformer.models import build_model_no_extra_params
         from utils import (
             Trainer,
             create_optimizer,

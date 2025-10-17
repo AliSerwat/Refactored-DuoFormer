@@ -18,7 +18,7 @@ from pathlib import Path
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from models import build_model_no_extra_params, count_parameters
+from duoformer.models import build_model_no_extra_params, count_parameters
 
 
 def test_model_init_resnet50():

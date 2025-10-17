@@ -24,7 +24,7 @@ import sys
 # Add project root
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from models import build_model_no_extra_params, count_parameters
+from duoformer.models import build_model_no_extra_params, count_parameters
 from utils import (
     setup_device_environment,
     print_platform_info,

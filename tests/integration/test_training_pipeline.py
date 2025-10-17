@@ -26,7 +26,7 @@ def test_full_training_pipeline():
         import torch
         import torch.nn as nn
         from torch.utils.data import TensorDataset, DataLoader
-        from models import build_model_no_extra_params, count_parameters
+        from duoformer.models import build_model_no_extra_params, count_parameters
         from utils import Trainer, create_optimizer, create_scheduler
 
         # Use CPU for testing (avoid GPU resource usage)
