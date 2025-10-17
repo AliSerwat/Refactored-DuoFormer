@@ -1,0 +1,21 @@
+{
+  "repository": "Refactored-DuoFormer",
+  "audit_date": "2025-10-17T12:20:35.762371",
+  "tools_available": {
+    "ruff": false,
+    "black": true,
+    "mypy": true,
+    "pytest": true
+  },
+  "diagnostics_generated": {
+    "ruff.json": true,
+    "black-check.txt": true,
+    "mypy-src.txt": true,
+    "pytest-summary.txt": true,
+    "requirements-before.txt": true,
+    "secrets-scan.json": true,
+    "license.txt": false
+  },
+  "files_checked": 12,
+  "license_present": true
+}
