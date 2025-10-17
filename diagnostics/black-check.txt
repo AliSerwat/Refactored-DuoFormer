@@ -1,8 +1,0 @@
-would reformat /teamspace/studios/this_studio/Refactored-DuoFormer/scripts/check_system.py
-would reformat /teamspace/studios/this_studio/Refactored-DuoFormer/scripts/validate_data.py
-would reformat /teamspace/studios/this_studio/Refactored-DuoFormer/tests/unit/test_fix_dataset_split.py
-would reformat /teamspace/studios/this_studio/Refactored-DuoFormer/scripts/health_check.py
-would reformat /teamspace/studios/this_studio/Refactored-DuoFormer/train.py
-
-Oh no! 💥 💔 💥
-5 files would be reformatted, 82 files would be left unchanged.

@@ -201,6 +201,12 @@ Thumbs.db
 # Project specific - Housekeeping audit artifacts (temporary)
 diagnostics/
 patches/
+audit_report.json
+RISK_MANUAL_REVIEW.md
+security_test_output.txt
+
+# Project specific - Archive directory (optional cleanup)
+archive/
 
 # Project specific - Additional auto-generated files
 *.tmp
