@@ -201,7 +201,6 @@ Thumbs.db
 # Project specific - Housekeeping audit artifacts (temporary)
 diagnostics/
 patches/
-scripts/
 
 # Project specific - Additional auto-generated files
 *.tmp

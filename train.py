@@ -226,6 +226,114 @@ def main():
 
     # Create data loaders
     print("📊 Creating data loaders...")
+
+    # Interactive data path input if not provided
+    if not args.data_dir and not args.csv_file:
+        print("\n" + "=" * 80)
+        print("📁 DATA DIRECTORY SETUP REQUIRED")
+        print("=" * 80)
+        print("\n🔍 No data directory or CSV file provided!")
+        print("Please specify your data location using one of these methods:\n")
+
+        print("📂 METHOD 1: Directory Structure (Recommended)")
+        print("\n🌳 REQUIRED DATA STRUCTURE:")
+        print("   ┌─────────────────────────────────────────────────────────┐")
+        print("   │                    your_data_folder/                    │")
+        print("   │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────┐ │")
+        print("   │  │   class_name_1  │  │   class_name_2  │  │ class_3 │ │")
+        print("   │  │  ┌─────────────┐ │  │  ┌─────────────┐ │ │ ┌─────┐ │ │")
+        print("   │  │  │ image1.png  │ │  │  │ image1.jpg  │ │ │ │img1 │ │ │")
+        print("   │  │  │ image2.jpg  │ │  │  │ image2.tif  │ │ │ │img2 │ │ │")
+        print("   │  │  │ image3.tif  │ │  │  │ image3.png  │ │ │ │img3 │ │ │")
+        print("   │  │  └─────────────┘ │  │  └─────────────┘ │ │ └─────┘ │ │")
+        print("   │  └─────────────────┘  └─────────────────┘  └─────────┘ │")
+        print("   └─────────────────────────────────────────────────────────┘")
+        print("\n📋 STRUCTURE RULES:")
+        print("   ✅ Each class = separate folder")
+        print("   ✅ Class names = descriptive (benign, malignant, normal)")
+        print("   ✅ Images = PNG, JPG, JPEG, TIF, TIFF formats")
+        print("   ✅ No spaces in class folder names (use underscores)")
+        print("\n💡 EXAMPLE FOR MEDICAL IMAGING:")
+        print("   medical_data/")
+        print("   ├── benign/")
+        print("   │   ├── patient_001.png")
+        print("   │   └── patient_002.jpg")
+        print("   ├── malignant/")
+        print("   │   ├── tumor_001.tif")
+        print("   │   └── tumor_002.png")
+        print("   └── normal/")
+        print("       └── healthy_001.jpg")
+
+        print("\n📄 METHOD 2: CSV File")
+        print("   Your CSV should have these columns:")
+        print("   image_path,label")
+        print("   /path/to/image1.png,class_0")
+        print("   /path/to/image2.jpg,class_1")
+        print("   /path/to/image3.tif,class_2")
+
+        print("\n" + "=" * 80)
+
+        # Get user input
+        while True:
+            print("\n🎯 Choose your data input method:")
+            print("   1. Directory structure")
+            print("   2. CSV file")
+            print("   3. Exit and use demo notebook")
+
+            choice = input("\nEnter your choice (1/2/3): ").strip()
+
+            if choice == "1":
+                data_path = input("\n📁 Enter the path to your data directory: ").strip()
+                if data_path:
+                    # Validate directory exists
+                    data_path_obj = Path(data_path)
+                    if data_path_obj.exists() and data_path_obj.is_dir():
+                        args.data_dir = data_path
+                        print(f"✅ Using data directory: {data_path}")
+                        break
+                    else:
+                        print(f"❌ Directory not found: {data_path}")
+                        print("   Please check the path and try again.")
+                        continue
+                else:
+                    print("❌ Please enter a valid path.")
+                    continue
+
+            elif choice == "2":
+                csv_path = input("\n📄 Enter the path to your CSV file: ").strip()
+                if csv_path:
+                    # Validate CSV exists
+                    csv_path_obj = Path(csv_path)
+                    if csv_path_obj.exists() and csv_path_obj.is_file():
+                        args.csv_file = csv_path
+                        print(f"✅ Using CSV file: {csv_path}")
+                        break
+                    else:
+                        print(f"❌ CSV file not found: {csv_path}")
+                        print("   Please check the path and try again.")
+                        continue
+                else:
+                    print("❌ Please enter a valid path.")
+                    continue
+
+            elif choice == "3":
+                print("\n🔬 For demo purposes, try:")
+                print("   jupyter notebook demo_duoformer.ipynb")
+                return
+            else:
+                print("❌ Invalid choice. Please enter 1, 2, or 3.")
+                continue
+
+        # Ask for number of classes if not specified
+        if not args.num_classes or args.num_classes == 10:
+            print(f"\n📊 Current number of classes: {args.num_classes}")
+            num_classes_input = input("Enter number of classes (or press Enter to keep current): ").strip()
+            if num_classes_input.isdigit():
+                args.num_classes = int(num_classes_input)
+                print(f"✅ Number of classes set to: {args.num_classes}")
+
+        print("\n" + "=" * 80)
+
     try:
         train_loader, val_loader, test_loader = create_dataloaders(
             data_dir=args.data_dir,
@@ -234,12 +342,46 @@ def main():
             num_workers=args.num_workers,
             image_size=args.image_size,
         )
+    except FileNotFoundError as e:
+        print(f"❌ Data not found: {e}")
+        print("\n💡 Please check:")
+        if args.data_dir:
+            print(f"   • Data directory exists: {args.data_dir}")
+            print("   • Directory contains class subfolders")
+            print("   • Each class folder contains image files")
+        if args.csv_file:
+            print(f"   • CSV file exists: {args.csv_file}")
+            print("   • CSV has 'image_path' and 'label' columns")
+        return
+    except ValueError as e:
+        print(f"❌ Data structure error: {e}")
+        print("\n💡 Data structure requirements:")
+        if args.data_dir:
+            print("   📂 Directory structure:")
+            print("   ┌─────────────────────────────────────────────────────────┐")
+            print("   │                    your_data_folder/                    │")
+            print("   │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────┐ │")
+            print("   │  │   class_name_1  │  │   class_name_2  │  │ class_3 │ │")
+            print("   │  │  ┌─────────────┐ │  │  ┌─────────────┐ │ │ ┌─────┐ │ │")
+            print("   │  │  │ image1.png  │ │  │  │ image1.jpg  │ │ │ │img1 │ │ │")
+            print("   │  │  │ image2.jpg  │ │  │  │ image2.tif  │ │ │ │img2 │ │ │")
+            print("   │  │  │ image3.tif  │ │  │  │ image3.png  │ │ │ │img3 │ │ │")
+            print("   │  │  └─────────────┘ │  │  └─────────────┘ │ │ └─────┘ │ │")
+            print("   │  └─────────────────┘  └─────────────────┘  └─────────┘ │")
+            print("   └─────────────────────────────────────────────────────────┘")
+        if args.csv_file:
+            print("   📄 CSV format:")
+            print("   image_path,label")
+            print("   /path/to/image1.png,class_name_1")
+            print("   /path/to/image2.jpg,class_name_2")
+        return
     except Exception as e:
         print(f"❌ Error creating data loaders: {e}")
-        print("\n💡 To use this script, you need to:")
-        print("   1. Provide --data_dir with class subfolders, OR")
-        print("   2. Provide --csv_file with image_path and label columns")
-        print("\n   For demo purposes, using synthetic data from demo_duoformer.ipynb")
+        print("\n💡 Common issues:")
+        print("   • Invalid image formats (use PNG, JPG, JPEG, TIF, TIFF)")
+        print("   • Missing 'image_path' or 'label' columns in CSV")
+        print("   • Empty directories or no images found")
+        print("   • Corrupted image files")
         return
 
     # Build model
