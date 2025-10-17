@@ -74,7 +74,7 @@ python examples/demo_robust.py
 python train.py --data_dir /path/to/data
 
 # Or with specific configuration
-python train.py --config config/default_config.yaml
+python train.py --config src/duoformer/config/default_config.yaml
 ```
 
 ---
@@ -123,13 +123,13 @@ duoformer/
 │   ├── FIXES_APPLIED.md              What's been fixed
 │   └── QUICK_FIX_REFERENCE.md        Developer quick reference
 │
-├── 📁 config/                        Configuration Management
+├── 📁 src/duoformer/config/             Configuration Management
 │   ├── model_config.py               Type-safe configs (Python dataclasses)
 │   ├── default_config.yaml           Balanced settings
 │   ├── lightweight_config.yaml       Fast experiments (ResNet-18, 2 scales)
 │   └── performance_config.yaml       Best accuracy (ResNet-50, 4 scales)
 │
-├── 📁 models/                        Model Architectures
+├── 📁 src/duoformer/models/              Model Architectures
 │   ├── __init__.py                   Exports: build_model_no_extra_params(), count_parameters()
 │   ├── model_wo_extra_params.py      Main DuoFormer (recommended)
 │   ├── model.py                      Original implementation
@@ -179,7 +179,7 @@ duoformer/
 python train.py --data_dir /path/to/data
 
 # With custom configuration
-python train.py --config config/performance_config.yaml
+python train.py --config src/duoformer/config/performance_config.yaml
 
 # Specific device
 python train.py --device cuda --data_dir ./data
@@ -200,24 +200,24 @@ python train.py --resume checkpoints/best_checkpoint.pt
 ### Configuration
 
 ```python
-from config import ModelConfig
+from duoformer.config import ModelConfig
 
 # Load from YAML
-config = ModelConfig.from_yaml('config/my_experiment.yaml')
+config = ModelConfig.from_yaml('src/duoformer/config/my_experiment.yaml')
 
 # Or use presets
-from config import DEFAULT_CONFIG, LIGHTWEIGHT_CONFIG, PERFORMANCE_CONFIG
+from duoformer.config import DEFAULT_CONFIG, LIGHTWEIGHT_CONFIG, PERFORMANCE_CONFIG
 
 # Modify and save
 config.training.epochs = 200
-config.to_yaml('config/my_custom.yaml')
+config.to_yaml('src/duoformer/config/my_custom.yaml')
 ```
 
 ### Inference
 
 ```python
 import torch
-from models import build_model_no_extra_params
+from duoformer.models import build_model_no_extra_params
 
 # Load checkpoint
 checkpoint = torch.load('checkpoints/best_checkpoint.pt')
@@ -256,7 +256,7 @@ with torch.no_grad():
 
 ### Custom Configuration
 
-Create `config/my_experiment.yaml`:
+Create `src/duoformer/config/my_experiment.yaml`:
 
 ```yaml
 exp_name: my_tcga_experiment
@@ -291,7 +291,7 @@ data:
 
 Then train:
 ```bash
-python train.py --config config/my_experiment.yaml
+python train.py --config src/duoformer/config/my_experiment.yaml
 ```
 
 ---
@@ -479,7 +479,7 @@ This implementation works with various medical imaging modalities:
 python train.py \
     --data_dir ./data/histopathology \
     --num_classes 10 \
-    --config config/default_config.yaml
+    --config src/duoformer/config/default_config.yaml
 
 # Radiology (e.g., X-rays, CT, MRI)
 python train.py \
@@ -498,7 +498,7 @@ python train.py \
 python train.py \
     --data_dir ./data/retinal \
     --num_classes 5 \
-    --config config/performance_config.yaml
+    --config src/duoformer/config/performance_config.yaml
 ```
 
 ### Fine-Tuning

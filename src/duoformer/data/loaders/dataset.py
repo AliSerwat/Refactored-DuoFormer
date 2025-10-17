@@ -165,7 +165,7 @@ class MedicalImageDataset(Dataset):
         # Ensure image is a tensor (transforms should already convert it)
         if not isinstance(image, torch.Tensor):  # type: ignore[unreachable]
             image = transforms.ToTensor()(image)
-        
+
         # Type assertion for mypy - we know image is a tensor at this point
         # Cast to help mypy understand the type
         image_tensor: torch.Tensor = image  # type: ignore
