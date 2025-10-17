@@ -1,0 +1,39 @@
+{
+  "timestamp": "2024-10-17T13:47:00Z",
+  "repository": "Refactored-DuoFormer",
+  "branch": "housekeeping/auto-fixes",
+  "baseline_summary": {
+    "pytest_status": "PASSED",
+    "pytest_exit_code": 0,
+    "ruff_status": "NOT_INSTALLED",
+    "black_status": "NEEDS_REFORMATTING",
+    "black_files_to_reformat": 5,
+    "mypy_status": "ERRORS_FOUND",
+    "mypy_errors": 25,
+    "mypy_files_with_errors": 7,
+    "git_status": "CLEAN",
+    "requirements_captured": true
+  },
+  "critical_findings": [
+    {
+      "type": "mypy_errors",
+      "count": 25,
+      "files_affected": 7,
+      "severity": "HIGH"
+    },
+    {
+      "type": "black_formatting",
+      "count": 5,
+      "files_affected": 5,
+      "severity": "MEDIUM"
+    }
+  ],
+  "diagnostic_files": {
+    "pytest_before": "diagnostics/pytest-before.txt",
+    "ruff_check": "diagnostics/ruff.json",
+    "black_check": "diagnostics/black-check.txt",
+    "mypy_src": "diagnostics/mypy-src.txt",
+    "git_status": "diagnostics/git-status-before.txt",
+    "requirements": "diagnostics/requirements-before.txt"
+  }
+}

@@ -1,0 +1,57 @@
+# Ignored Candidates for Housekeeping Audit
+
+## Auto-generated files (should be ignored)
+- __pycache__/ directories
+- *.pyc files
+- *.pyo files
+- .pytest_cache/
+- .mypy_cache/
+- .coverage
+- .tox/
+- .nox/
+
+## Build artifacts
+- build/
+- dist/
+- *.egg-info/
+- src/refactored_duoformer.egg-info/ (stale packaging metadata)
+
+## Runtime artifacts (do not delete, archive if needed)
+- runs/ (training runs and experiments)
+- logs/ (training logs)
+- checkpoints/ (model checkpoints)
+- outputs/ (training outputs)
+- wandb/ (Weights & Biases logs)
+- mlruns/ (MLflow logs)
+
+## IDE and editor files
+- .vscode/
+- .idea/
+- *.swp
+- *.swo
+- *~
+
+## OS files
+- .DS_Store
+- Thumbs.db
+- .Spotlight-V100
+- .Trashes
+
+## Environment files
+- .env
+- .venv/
+- venv/
+- ENV/
+
+## Temporary files
+- *.tmp
+- *.temp
+- *.bak
+- *.backup
+
+## Documentation build artifacts
+- docs/_build/
+- site/
+
+## Jupyter artifacts
+- .ipynb_checkpoints/

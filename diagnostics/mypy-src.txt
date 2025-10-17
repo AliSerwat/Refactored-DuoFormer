@@ -1,0 +1,136 @@
+src/duoformer/data/loaders/dataset.py: note: In member "__getitem__" of class "MedicalImageDataset":
+src/duoformer/data/loaders/dataset.py:166:27: error: Subclass of "Image" and
+"Tensor" cannot exist: would have incompatible method signatures  [unreachable]
+            if not isinstance(image, torch.Tensor):
+                              ^~~~~
+src/duoformer/data/loaders/dataset.py: note: In function "create_dataloaders":
+src/duoformer/data/loaders/dataset.py:330:42: error: Argument 2 to "Subset" has
+incompatible type "Subset[Any]"; expected "Sequence[int]"  [arg-type]
+        train_dataset = Subset(full_dataset, train_indices)
+                                             ^~~~~~~~~~~~~
+src/duoformer/data/loaders/dataset.py:339:44: error: Argument 2 to "Subset" has
+incompatible type "Subset[Any]"; expected "Sequence[int]"  [arg-type]
+        val_dataset = Subset(val_dataset_full, val_indices)
+                                               ^~~~~~~~~~~
+src/duoformer/data/loaders/dataset.py:340:45: error: Argument 2 to "Subset" has
+incompatible type "Subset[Any]"; expected "Sequence[int]"  [arg-type]
+        test_dataset = Subset(val_dataset_full, test_indices)
+                                                ^~~~~~~~~~~~
+src/duoformer/models/duoformer_model.py:26:1: error: Module
+"src.duoformer.models.backbone" has no attribute "Backbone"  [attr-defined]
+    from .backbone import Backbone, Backbone2
+    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/duoformer/models/duoformer_model.py:26:1: error: Module
+"src.duoformer.models.backbone" has no attribute "Backbone2"  [attr-defined]
+    from .backbone import Backbone, Backbone2
+    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/duoformer/models/duoformer_model.py: note: In member "__init__" of class "DuoFormerModel":
+src/duoformer/models/duoformer_model.py:141:37: error: Name
+"resnet50FeatureExtractor" is not defined  [name-defined]
+                self.resnet_projector = resnet50FeatureExtractor(
+                                        ^~~~~~~~~~~~~~~~~~~~~~~~
+src/duoformer/models/attention/multiscale_attn.py: note: In member "forward_change_order_attn1" of class "MultiscaleBlock":
+src/duoformer/models/attention/multiscale_attn.py:159:42: error: "Tensor" not
+callable  [operator]
+            x = x + self.drop_path1(self.ls1(self.attn.forward_with_scale(...
+                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~...
+src/duoformer/models/attention/multiscale_attn.py: note: In member "forward_change_order_attn2_block1" of class "MultiscaleBlock":
+src/duoformer/models/attention/multiscale_attn.py:164:13: error: "Tensor" not
+callable  [operator]
+            x = self.attn.forward_with_region(x, cls_token, pos_embed, pos...
+                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~...
+src/duoformer/models/attention/multiscale_attn.py: note: In member "forward_change_order_attn2" of class "MultiscaleBlock":
+src/duoformer/models/attention/multiscale_attn.py:168:13: error: "Tensor" not
+callable  [operator]
+            x = self.attn.forward_with_region(x)
+                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/duoformer/models/attention/multiscale_attn.py: note: In member "forward" of class "MultiscaleBlock":
+src/duoformer/models/attention/multiscale_attn.py:175:5: error: Signature of
+"forward" incompatible with supertype "timm.models.vision_transformer.Block" 
+[override]
+        def forward(self, x):
+        ^
+src/duoformer/models/attention/multiscale_attn.py:175:5: note:      Superclass:
+src/duoformer/models/attention/multiscale_attn.py:175:5: note:          def forward(self, x: Tensor, attn_mask: Tensor | None = ...) -> Tensor
+src/duoformer/models/attention/multiscale_attn.py:175:5: note:      Subclass:
+src/duoformer/models/attention/multiscale_attn.py:175:5: note:          def forward(self, x: Any) -> Any
+src/duoformer/models/attention/multiscale_attn.py:178:42: error: "Tensor" not
+callable  [operator]
+            x = x + self.drop_path1(self.ls1(self.attnOri(self.norm1(x))))
+                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/duoformer/models/transformer/multi_vision_transformer.py: note: In member "_init_weights" of class "MultiscaleTransformer":
+src/duoformer/models/transformer/multi_vision_transformer.py:96:5: error:
+Signature of "_init_weights" incompatible with supertype
+"timm.models.vision_transformer.VisionTransformer"  [override]
+        def _init_weights(self):
+        ^
+src/duoformer/models/transformer/multi_vision_transformer.py:96:5: note:      Superclass:
+src/duoformer/models/transformer/multi_vision_transformer.py:96:5: note:          def _init_weights(self, m: Module) -> None
+src/duoformer/models/transformer/multi_vision_transformer.py:96:5: note:      Subclass:
+src/duoformer/models/transformer/multi_vision_transformer.py:96:5: note:          def _init_weights(self) -> Any
+src/duoformer/models/transformer/multi_vision_transformer.py:98:13: error:
+Argument 1 to "_init_weights" of "VisionTransformer" has incompatible type
+"Parameter"; expected Module  [arg-type]
+                self.pos_embed_for_scale
+                ^~~~~~~~~~~~~~~~~~~~~~~~
+src/duoformer/models/transformer/multi_vision_transformer.py:109:17: error:
+"Tensor" not callable  [operator]
+                    block.init_weights()
+                    ^~~~~~~~~~~~~~~~~~~~
+src/duoformer/models/transformer/multi_vision_transformer.py: note: In member "forward" of class "MultiscaleTransformer":
+src/duoformer/models/transformer/multi_vision_transformer.py:111:5: error:
+Signature of "forward" incompatible with supertype
+"timm.models.vision_transformer.VisionTransformer"  [override]
+        def forward(self, x):
+        ^
+src/duoformer/models/transformer/multi_vision_transformer.py:111:5: note:      Superclass:
+src/duoformer/models/transformer/multi_vision_transformer.py:111:5: note:          def forward(self, x: Tensor, attn_mask: Tensor | None = ...) -> Tensor
+src/duoformer/models/transformer/multi_vision_transformer.py:111:5: note:      Subclass:
+src/duoformer/models/transformer/multi_vision_transformer.py:111:5: note:          def forward(self, x: Any) -> Any
+src/duoformer/models/transformer/multi_vision_transformer.py:134:25: error:
+Item "None" of "Parameter | None" has no attribute "expand"  [union-attr]
+                cls_token = self.cls_token.expand(
+                            ^~~~~~~~~~~~~~~~~~~~~
+src/duoformer/models/transformer/multi_vision_transformer.py:145:21: error:
+"Tensor" not callable  [operator]
+                    x = self.blocks[i].forward_change_order_attn1(x)
+                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/duoformer/models/transformer/multi_vision_transformer.py:151:25: error:
+"Tensor" not callable  [operator]
+                        x = self.blocks[i].forward_change_order_attn2_bloc...
+                            ^
+src/duoformer/models/transformer/multi_vision_transformer.py:155:33: error:
+"Tensor" not callable  [operator]
+                        cls_token = self.blocks[i].forward_change_order_at...
+                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~...
+src/duoformer/models/attention/scale_attention.py: note: In member "forward" of class "AttentionForScale":
+src/duoformer/models/attention/scale_attention.py:22:5: error: Signature of
+"forward" incompatible with supertype "timm.layers.attention.Attention" 
+[override]
+        def forward(self, x):
+        ^
+src/duoformer/models/attention/scale_attention.py:22:5: note:      Superclass:
+src/duoformer/models/attention/scale_attention.py:22:5: note:          def forward(self, x: Tensor, attn_mask: Tensor | None = ...) -> Tensor
+src/duoformer/models/attention/scale_attention.py:22:5: note:      Subclass:
+src/duoformer/models/attention/scale_attention.py:22:5: note:          def forward(self, x: Any) -> Any
+src/duoformer/models/model_wo_extra_params.py: note: In member "__init__" of class "MyModel_no_extra_params":
+src/duoformer/models/model_wo_extra_params.py:108:37: error: Name
+"resnet50FeatureExtractor" is not defined  [name-defined]
+                self.resnet_projector = resnet50FeatureExtractor(
+                                        ^~~~~~~~~~~~~~~~~~~~~~~~
+src/duoformer/training/train.py:46:1: error: Module
+"src.duoformer.training.trainer" has no attribute "create_optimizer" 
+[attr-defined]
+    from ..training.trainer import Trainer, create_optimizer, create_sched...
+    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~...
+src/duoformer/training/train.py:46:1: error: Module
+"src.duoformer.training.trainer" has no attribute "create_scheduler" 
+[attr-defined]
+    from ..training.trainer import Trainer, create_optimizer, create_sched...
+    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~...
+src/duoformer/training/train.py:53:1: error: Module
+"src.duoformer.utils.exceptions" has no attribute "ValidationError" 
+[attr-defined]
+    from ..utils.exceptions import (
+    ^
+Found 25 errors in 7 files (checked 32 source files)
