@@ -131,7 +131,6 @@ Refactored-DuoFormer/
 │
 ├── 📋 Documentation Files
 │   ├── README.md                 # Main project documentation
-│   ├── CHANGELOG.md             # Version history
 │   ├── GETTING_STARTED.md       # Getting started guide
 │   ├── SECURITY.md              # Security policy
 │   └── LICENSE                  # License file
