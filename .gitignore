@@ -207,3 +207,7 @@ patches/
 *.temp
 *.bak
 *.backup
+
+# Housekeeping scripts (keep in repo)
+scripts/
+!scripts/.gitkeep
