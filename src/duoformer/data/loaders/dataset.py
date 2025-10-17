@@ -144,7 +144,7 @@ class MedicalImageDataset(Dataset):
         # Load image
         img_path = row["image_path"]
         try:
-            image = Image.open(img_path).convert("RGB")
+            image: Image.Image = Image.open(img_path).convert("RGB")
         except Exception as e:
             warnings.warn(f"Error loading image {img_path}: {e}")
             # Return a blank image as fallback
@@ -162,11 +162,14 @@ class MedicalImageDataset(Dataset):
         if self.target_transform:
             label = self.target_transform(label)
 
-        # Ensure image is a tensor
-        if not isinstance(image, torch.Tensor):
+        # Ensure image is a tensor (transforms should already convert it)
+        if not isinstance(image, torch.Tensor):  # type: ignore[unreachable]
             image = transforms.ToTensor()(image)
-
-        return image, label
+        
+        # Type assertion for mypy - we know image is a tensor at this point
+        # Cast to help mypy understand the type
+        image_tensor: torch.Tensor = image  # type: ignore
+        return image_tensor, label
 
     def get_class_distribution(self) -> Dict[str, int]:
         """Get distribution of classes."""
@@ -322,22 +325,9 @@ def create_dataloaders(
 
     # Random split
     generator = torch.Generator().manual_seed(seed)
-    train_indices, val_indices, test_indices = random_split(
+    train_dataset, val_dataset, test_dataset = random_split(
         full_dataset, [train_size, val_size, test_size], generator=generator
     )
-
-    # Create datasets with appropriate transforms
-    train_dataset = Subset(full_dataset, train_indices)
-
-    # For val/test, create new datasets with val transform
-    val_dataset_full = MedicalImageDataset(
-        data_dir=data_dir,
-        csv_file=csv_file,
-        transform=val_transform,
-        image_size=image_size,
-    )
-    val_dataset = Subset(val_dataset_full, val_indices)
-    test_dataset = Subset(val_dataset_full, test_indices)
 
     # Get platform-specific settings if pin_memory not explicitly set
     if pin_memory is True:
