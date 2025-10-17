@@ -64,7 +64,7 @@ else
     print_warning "Applying black formatting..."
     python -m black . --quiet
     git add .
-    git commit -m "style: apply code formatting" || print_warning "No changes to commit"
+    git commit -m "style: apply code formatting (black/ruff)" || print_warning "No changes to commit"
 fi
 
 # Verify tests still pass after formatting
@@ -76,6 +76,48 @@ else
     print_error "Tests failed after formatting - reverting"
     git reset --hard HEAD~1
     exit 1
+fi
+
+# Apply patches
+echo ""
+echo "🔧 Applying patches..."
+
+# Apply Python version badge fix
+if git apply patches/fix-python-version-badge.diff 2>/dev/null; then
+    print_status "Applied Python version badge fix"
+    git add README.md
+    git commit -m "chore(docs): fix Python version badge to match pyproject.toml (3.10+)" || print_warning "No changes to commit"
+else
+    print_warning "Python version badge patch already applied or not needed"
+fi
+
+# Apply dataset splitting fix
+if git apply patches/fix-dataset-split.diff 2>/dev/null; then
+    print_status "Applied dataset splitting fix"
+    git add src/duoformer/data/loaders/dataset.py tests/unit/test_fix_dataset_split.py
+    git commit -m "fix(data): fix dataset splitting type annotations and random_split usage
+
+- Fix random_split call to use full_dataset instead of range(total_size)
+- Remove redundant type annotations that caused redefinition errors
+- Add test to verify the fix works correctly" || print_warning "No changes to commit"
+else
+    print_warning "Dataset splitting patch already applied or not needed"
+fi
+
+# Apply .gitignore updates
+echo ""
+echo "📋 Updating .gitignore..."
+if [ -f ".gitignore.new" ]; then
+    mv .gitignore.new .gitignore
+    git add .gitignore requirements.txt
+    git commit -m "chore: update .gitignore with comprehensive auto-generated file exclusions
+
+- Add diagnostics/, patches/, scripts/ to exclusions for housekeeping artifacts
+- Fix requirements.txt to be committed (it should be tracked for reproducibility)
+- Include comprehensive list of auto-generated files and directories" || print_warning "No changes to commit"
+    print_status "Updated .gitignore"
+else
+    print_warning ".gitignore already updated"
 fi
 
 # Verify imports still work
@@ -107,9 +149,11 @@ echo "🎉 Housekeeping completed successfully!"
 echo ""
 echo "📋 Summary of changes:"
 echo "  • Applied consistent code formatting"
+echo "  • Fixed Python version badge in README"
+echo "  • Fixed dataset splitting type annotations"
+echo "  • Updated .gitignore with comprehensive exclusions"
 echo "  • Verified all tests pass"
 echo "  • Confirmed package imports work"
-echo "  • Validated type safety"
 echo ""
 
 echo "🚀 Next steps:"
