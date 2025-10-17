@@ -1,0 +1,64 @@
+ D .github/workflows/test-environment.yml
+ M .gitignore
+ M GETTING_STARTED.md
+ M README.md
+ D config/__init__.py
+ D config/default_config.yaml
+ D config/lightweight_config.yaml
+ D config/model_config.py
+ D config/performance_config.yaml
+ M docs/FIXES_APPLIED.md
+ M docs/INSTALLATION.md
+ M docs/QUICK_FIX_REFERENCE.md
+ M docs/TROUBLESHOOTING.md
+ D examples/README.txt
+ D examples/__init__.py
+ D examples/demo_robust.py
+ D examples/example_usage.py
+ D models/__init__.py
+ D models/backbone.py
+ D models/model.py
+ D models/model_wo_extra_params.py
+ D models/multi_vision_transformer.py
+ D models/multiscale_attn.py
+ D models/projection_head.py
+ D models/resnet50ssl.py
+ D models/scale_attention.py
+ M requirements.in
+ M scripts/health_check.py
+ M scripts/verify_installation.py
+ M setup_environment.py
+ M tests/integration/test_full_models.py
+ M tests/integration/test_training_pipeline.py
+ M tests/unit/test_config.py
+ M tests/unit/test_lightweight.py
+ M tests/unit/test_utils.py
+ M train.py
+ D utils/__init__.py
+ D utils/dataset.py
+ D utils/device_utils.py
+ D utils/platform_utils.py
+ D utils/trainer.py
+?? .dockerignore
+?? .flake8
+?? .github/workflows/ci-cd.yml
+?? .github/workflows/type-check.yml
+?? .pre-commit-config.yaml
+?? CLOUD_ACCESS_GUIDE.md
+?? DEPENDENCIES.md
+?? Dockerfile.jupyter
+?? PROJECT_STRUCTURE.md
+?? SECURITY.md
+?? deployment/
+?? diagnostics/
+?? docker-compose.yml
+?? docs/TESTING_GUIDE.md
+?? infrastructure/
+?? mypy.ini
+?? notebooks/
+?? pyproject.toml
+?? requirements.txt
+?? scripts/install_jupyter_extensions.py
+?? scripts/start_jupyter_cloud.py
+?? src/
+?? tools/

@@ -1,0 +1,11 @@
+would reformat /teamspace/studios/this_studio/Refactored-DuoFormer/config/model_config.py
+would reformat /teamspace/studios/this_studio/Refactored-DuoFormer/models/projection_head.py
+would reformat /teamspace/studios/this_studio/Refactored-DuoFormer/src/duoformer/utils/__init__.py
+would reformat /teamspace/studios/this_studio/Refactored-DuoFormer/src/duoformer/data/loaders/dataset.py
+would reformat /teamspace/studios/this_studio/Refactored-DuoFormer/src/duoformer/training/train.py
+would reformat /teamspace/studios/this_studio/Refactored-DuoFormer/src/duoformer/training/trainer/trainer.py
+would reformat /teamspace/studios/this_studio/Refactored-DuoFormer/src/duoformer/utils/platform/platform_utils.py
+would reformat /teamspace/studios/this_studio/Refactored-DuoFormer/src/duoformer/utils/exceptions/exceptions.py
+
+Oh no! 💥 💔 💥
+8 files would be reformatted, 78 files would be left unchanged.

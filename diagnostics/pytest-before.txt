@@ -1,0 +1,15 @@
+
+==================================== ERRORS ====================================
+____________ ERROR collecting tests/integration/test_full_models.py ____________
+ImportError while importing test module '/teamspace/studios/this_studio/Refactored-DuoFormer/tests/integration/test_full_models.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/home/zeus/miniconda3/envs/cloudspace/lib/python3.12/importlib/__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/integration/test_full_models.py:21: in <module>
+    from models import build_model_no_extra_params, count_parameters
+E   ModuleNotFoundError: No module named 'models'
+=========================== short test summary info ============================
+ERROR tests/integration/test_full_models.py
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!

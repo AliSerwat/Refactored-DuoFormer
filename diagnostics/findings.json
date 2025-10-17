@@ -1,0 +1,42 @@
+[
+  {
+    "file_path": "src/duoformer/utils/__init__.py",
+    "line_number": null,
+    "severity": "Critical",
+    "type": "import_conflict",
+    "description": "Module name conflict: Source file found twice under different module names",
+    "repro_command": "python -m mypy src/duoformer/utils/__init__.py",
+    "impact": "Prevents proper type checking and imports",
+    "fix_suggestion": "Rename or restructure module to avoid naming conflicts"
+  },
+  {
+    "file_path": "Multiple files",
+    "line_number": null,
+    "severity": "High",
+    "type": "formatting",
+    "description": "8 files need black formatting (non-behavioral)",
+    "repro_command": "python -m black --check .",
+    "impact": "Inconsistent code formatting across codebase",
+    "fix_suggestion": "Run black formatter on affected files"
+  },
+  {
+    "file_path": "src/refactored_duoformer.egg-info/",
+    "line_number": null,
+    "severity": "Medium",
+    "type": "obsolete_files",
+    "description": "Build artifacts should be in .gitignore",
+    "repro_command": "ls -la src/refactored_duoformer.egg-info/",
+    "impact": "Unnecessary files in version control",
+    "fix_suggestion": "Ensure .gitignore excludes egg-info directory"
+  },
+  {
+    "file_path": "tests/",
+    "line_number": null,
+    "severity": "Low",
+    "type": "test_organization",
+    "description": "All tests passing but could verify integration tests",
+    "repro_command": "python tests/run_tests.py --integration",
+    "impact": "May miss integration issues",
+    "fix_suggestion": "Run full test suite including integration tests"
+  }
+]
