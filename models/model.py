@@ -88,7 +88,7 @@ class MyModel(nn.Module):
 
         self.index = {}
         for i in range(4):
-            self.index[f"{4-i-1}"] = torch.empty([49, 4**i], dtype=torch.int64)
+            self.index[f"{4 - i - 1}"] = torch.empty([49, 4**i], dtype=torch.int64)
 
         for r in range(7):
             for c in range(7):

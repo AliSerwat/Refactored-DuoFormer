@@ -180,7 +180,7 @@ class Trainer:
                 {
                     "loss": f"{loss.item():.4f}",
                     "acc": f"{acc:.2f}%",
-                    "lr": f'{self.optimizer.param_groups[0]["lr"]:.6f}',
+                    "lr": f"{self.optimizer.param_groups[0]['lr']:.6f}",
                 }
             )
 
@@ -231,7 +231,7 @@ class Trainer:
             correct += predicted.eq(target).sum().item()
 
             pbar.set_postfix(
-                {"loss": f"{loss.item():.4f}", "acc": f"{100.*correct/total:.2f}%"}
+                {"loss": f"{loss.item():.4f}", "acc": f"{100.0 * correct / total:.2f}%"}
             )
 
         avg_loss = total_loss / len(val_loader)
@@ -257,14 +257,14 @@ class Trainer:
             patience: Patience for early stopping
             save_best_only: Only save best models
         """
-        print(f"\n{'='*80}")
+        print(f"\n{'=' * 80}")
         print(f"🚀 Starting Training")
-        print(f"{'='*80}")
+        print(f"{'=' * 80}")
         print(f"Epochs: {epochs}")
         print(f"Train batches: {len(train_loader)}")
         print(f"Val batches: {len(val_loader)}")
         print(f"Early stopping patience: {patience}")
-        print(f"{'='*80}\n")
+        print(f"{'=' * 80}\n")
 
         start_time = time.time()
 
@@ -302,7 +302,7 @@ class Trainer:
 
             # Print epoch summary
             epoch_time = time.time() - epoch_start
-            print(f"\n📅 Epoch {epoch+1}/{epochs} - {epoch_time:.2f}s")
+            print(f"\n📅 Epoch {epoch + 1}/{epochs} - {epoch_time:.2f}s")
             print(f"   Train Loss: {train_loss:.4f}, Train Acc: {train_acc:.2f}%")
             print(f"   Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.2f}%")
             print(f"   Learning Rate: {current_lr:.6f}")
@@ -328,17 +328,17 @@ class Trainer:
             if not improved:
                 self.patience_counter += 1
                 if self.patience_counter >= patience:
-                    print(f"\n⏹️  Early stopping triggered after {epoch+1} epochs")
+                    print(f"\n⏹️  Early stopping triggered after {epoch + 1} epochs")
                     break
 
         total_time = time.time() - start_time
-        print(f"\n{'='*80}")
+        print(f"\n{'=' * 80}")
         print(f"🎉 Training Complete!")
-        print(f"{'='*80}")
-        print(f"Total time: {total_time/60:.2f} minutes")
+        print(f"{'=' * 80}")
+        print(f"Total time: {total_time / 60:.2f} minutes")
         print(f"Best validation accuracy: {self.best_val_acc:.2f}%")
         print(f"Best validation loss: {self.best_val_loss:.4f}")
-        print(f"{'='*80}\n")
+        print(f"{'=' * 80}\n")
 
         # Save final history
         self.save_history()
@@ -379,7 +379,7 @@ class Trainer:
 
         # Save epoch-specific checkpoint
         if (epoch + 1) % self.config.get("save_freq", 5) == 0:
-            epoch_path = self.checkpoint_dir / f"checkpoint_epoch_{epoch+1}.pt"
+            epoch_path = self.checkpoint_dir / f"checkpoint_epoch_{epoch + 1}.pt"
             torch.save(checkpoint, epoch_path)
 
     def load_checkpoint(self, checkpoint_path: str):

@@ -75,9 +75,9 @@ class DependencyManager:
         self, command: List[str], description: str, capture_output: bool = False
     ) -> Optional[str]:
         """Execute a shell command with error handling."""
-        safe_print(f"\n{'='*70}")
+        safe_print(f"\n{'=' * 70}")
         safe_print(f"🔧 {description}")
-        safe_print(f"{'='*70}")
+        safe_print(f"{'=' * 70}")
 
         if self.verbose:
             safe_print(f"Command: {' '.join(command)}\n")

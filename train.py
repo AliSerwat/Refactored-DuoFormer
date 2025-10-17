@@ -283,7 +283,9 @@ def main():
             choice = input("\nEnter your choice (1/2/3): ").strip()
 
             if choice == "1":
-                data_path = input("\n📁 Enter the path to your data directory: ").strip()
+                data_path = input(
+                    "\n📁 Enter the path to your data directory: "
+                ).strip()
                 if data_path:
                     # Validate directory exists
                     data_path_obj = Path(data_path)
@@ -327,7 +329,9 @@ def main():
         # Ask for number of classes if not specified
         if not args.num_classes or args.num_classes == 10:
             print(f"\n📊 Current number of classes: {args.num_classes}")
-            num_classes_input = input("Enter number of classes (or press Enter to keep current): ").strip()
+            num_classes_input = input(
+                "Enter number of classes (or press Enter to keep current): "
+            ).strip()
             if num_classes_input.isdigit():
                 args.num_classes = int(num_classes_input)
                 print(f"✅ Number of classes set to: {args.num_classes}")

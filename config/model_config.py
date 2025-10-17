@@ -55,9 +55,9 @@ class TransformerConfig:
         assert self.depth > 0, "Depth must be positive"
         assert self.embed_dim > 0, "Embedding dimension must be positive"
         assert self.num_heads > 0, "Number of heads must be positive"
-        assert (
-            self.embed_dim % self.num_heads == 0
-        ), "Embed_dim must be divisible by num_heads"
+        assert self.embed_dim % self.num_heads == 0, (
+            "Embed_dim must be divisible by num_heads"
+        )
 
 
 @dataclass

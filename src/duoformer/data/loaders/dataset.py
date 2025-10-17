@@ -285,9 +285,9 @@ def create_dataloaders(
     Returns:
         Tuple of (train_loader, val_loader, test_loader)
     """
-    assert (
-        abs(train_split + val_split + test_split - 1.0) < 1e-6
-    ), "Splits must sum to 1.0"
+    assert abs(train_split + val_split + test_split - 1.0) < 1e-6, (
+        "Splits must sum to 1.0"
+    )
 
     # Auto-detect optimal num_workers if not specified
     if num_workers is None:

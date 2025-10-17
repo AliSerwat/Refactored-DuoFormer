@@ -53,7 +53,6 @@ def build_model_no_extra_params(
     backbone="r50",
     pretrained=True,
 ):
-
     return MyModel_no_extra_params(
         depth=depth,
         embed_dim=embed_dim,
