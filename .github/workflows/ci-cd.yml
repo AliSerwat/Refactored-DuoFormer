@@ -1,0 +1,188 @@
+name: 🚀 CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop, by-claude-4.1-opus ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run tests weekly on Sundays at 3 AM UTC
+    - cron: '0 3 * * 0'
+
+env:
+  PYTHON_VERSION: '3.10'
+
+jobs:
+  # 🔍 Code Quality Checks
+  quality:
+    name: 🔍 Code Quality
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+
+    - name: 🐍 Set up Python ${{ env.PYTHON_VERSION }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+
+    - name: 📦 Install Dependencies
+      run: |
+        python -m pip install --upgrade pip pip-tools
+        pip install -e ".[dev]"
+
+    - name: 🖤 Code Formatting (Black)
+      run: black --check --diff .
+
+    - name: 📊 Import Sorting (isort)
+      run: isort --check-only --diff .
+
+    - name: 🔍 Linting (Flake8)
+      run: flake8 .
+
+    - name: 🏷️ Type Checking (MyPy)
+      run: mypy src/duoformer --show-error-codes --pretty || true
+      # Note: Using '|| true' to not fail on type errors initially
+
+    - name: 🔒 Security Scan (Bandit)
+      run: bandit -r src/duoformer -f json -o bandit-report.json || true
+
+    - name: 📤 Upload Security Report
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: security-report
+        path: bandit-report.json
+
+  # 🧪 Unit Tests (Multi-platform, Multi-version)
+  test:
+    name: 🧪 Tests (Python ${{ matrix.python-version }} on ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.10', '3.11', '3.12']
+
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+
+    - name: 🐍 Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+
+    - name: 📦 Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev]"
+
+    - name: 🧪 Run Unit Tests
+      run: |
+        pytest tests/unit/ -v --tb=short --cov=src/duoformer --cov-report=xml --cov-report=term
+
+    - name: 📊 Upload Coverage
+      uses: codecov/codecov-action@v3
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.10'
+      with:
+        file: ./coverage.xml
+        fail_ci_if_error: false
+
+  # 🚀 Integration Tests
+  integration:
+    name: 🚀 Integration Tests
+    runs-on: ubuntu-latest
+    needs: [quality, test]
+
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+
+    - name: 🐍 Set up Python ${{ env.PYTHON_VERSION }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+
+    - name: 📦 Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev]"
+
+    - name: 🔧 Run Integration Tests
+      run: |
+        pytest tests/integration/ -v --tb=short -x
+
+    - name: 🏥 Health Check
+      run: |
+        python tools/testing/health_check.py --verbose || true
+
+    - name: 🔍 System Check
+      run: |
+        python tools/testing/check_system.py || true
+
+  # 🐳 Docker Build Test
+  docker:
+    name: 🐳 Docker Build
+    runs-on: ubuntu-latest
+    needs: [quality]
+
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+
+    - name: 🐳 Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: 🔨 Build Docker Image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./Dockerfile.jupyter
+        push: false
+        tags: duoformer:test
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+    - name: 🧪 Test Docker Container
+      run: |
+        docker run --rm duoformer:test python -c "
+        import sys
+        import torch
+        print('✅ Docker container works!')
+        print(f'Python: {sys.version_info.major}.{sys.version_info.minor}')
+        print(f'PyTorch: {torch.__version__}')
+        print(f'CUDA available: {torch.cuda.is_available()}')
+        "
+
+  # 🎉 Success Notification
+  success:
+    name: 🎉 All Checks Passed
+    runs-on: ubuntu-latest
+    needs: [quality, test, integration, docker]
+    if: always()
+
+    steps:
+    - name: 🎉 Success
+      if: ${{ needs.quality.result == 'success' && needs.test.result == 'success' && needs.integration.result == 'success' && needs.docker.result == 'success' }}
+      run: |
+        echo "🎉 All CI checks passed successfully!"
+        echo "✅ Code Quality: ${{ needs.quality.result }}"
+        echo "✅ Tests: ${{ needs.test.result }}"
+        echo "✅ Integration: ${{ needs.integration.result }}"
+        echo "✅ Docker: ${{ needs.docker.result }}"
+
+    - name: ❌ Failure
+      if: ${{ needs.quality.result == 'failure' || needs.test.result == 'failure' || needs.integration.result == 'failure' || needs.docker.result == 'failure' }}
+      run: |
+        echo "❌ Some CI checks failed:"
+        echo "Code Quality: ${{ needs.quality.result }}"
+        echo "Tests: ${{ needs.test.result }}"
+        echo "Integration: ${{ needs.integration.result }}"
+        echo "Docker: ${{ needs.docker.result }}"
+        exit 1
+

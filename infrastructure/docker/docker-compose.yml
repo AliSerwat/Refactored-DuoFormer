@@ -1,0 +1,62 @@
+# 🐳 Docker Compose for DuoFormer Jupyter Environment
+# Cloud-optimized setup for medical imaging research
+
+version: '3.8'
+
+services:
+  duoformer-jupyter:
+    build:
+      context: .
+      dockerfile: Dockerfile.jupyter
+    container_name: duoformer-jupyter
+    ports:
+      - "8888:8888"  # Jupyter port
+    volumes:
+      - .:/workspace          # Mount project directory
+      - jupyter_data:/home/jovyan  # Persist Jupyter data
+      - ./data:/workspace/data      # Mount data directory
+      - ./logs:/workspace/logs      # Mount logs directory
+      - ./checkpoints:/workspace/checkpoints  # Mount checkpoints
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - JUPYTER_TOKEN=""  # No token for easier access
+      - PYTHONPATH=/workspace
+    networks:
+      - duoformer-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Optional: TensorBoard service
+  tensorboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.jupyter
+    container_name: duoformer-tensorboard
+    ports:
+      - "6006:6006"  # TensorBoard port
+    volumes:
+      - ./logs:/workspace/logs  # Mount logs for TensorBoard
+    command: >
+      bash -c "
+        echo '🔍 Starting TensorBoard...' &&
+        echo '📊 Access: http://localhost:6006' &&
+        tensorboard --logdir=/workspace/logs --host=0.0.0.0 --port=6006
+      "
+    networks:
+      - duoformer-network
+    restart: unless-stopped
+    profiles:
+      - tensorboard  # Only start with --profile tensorboard
+
+volumes:
+  jupyter_data:
+    driver: local
+
+networks:
+  duoformer-network:
+    driver: bridge

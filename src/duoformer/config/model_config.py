@@ -11,10 +11,35 @@ Paper: https://arxiv.org/abs/2506.12982
 """
 
 from dataclasses import dataclass, field
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Union
 from pathlib import Path
 import yaml
 import json
+import sys
+import os
+
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+
+# Validation functions (inline to avoid circular imports)
+def validate_positive_number(value, name, allow_zero=False):
+    """Validate that a value is a positive number."""
+    if not isinstance(value, (int, float)):
+        raise ValueError(f"{name} must be a number, got {value}")
+    if allow_zero:
+        if value < 0:
+            raise ValueError(f"{name} must be non-negative, got {value}")
+    else:
+        if value <= 0:
+            raise ValueError(f"{name} must be a positive number, got {value}")
+    return value
+
+
+def validate_range(value, min_val, max_val, name):
+    """Validate that a value is within a range."""
+    if not isinstance(value, (int, float)) or not (min_val <= value <= max_val):
+        raise ValueError(f"{name} must be between {min_val} and {max_val}, got {value}")
+    return value
 
 
 @dataclass
@@ -26,7 +51,7 @@ class BackboneConfig:
     freeze: bool = True
     weights: Optional[str] = "DEFAULT"  # 'DEFAULT', 'IMAGENET1K_V1', etc.
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         """Validate configuration."""
         valid_backbones = ["resnet50", "resnet18", "resnet50_swav"]
         if self.name not in valid_backbones:
@@ -50,14 +75,20 @@ class TransformerConfig:
     drop_path_rate: float = 0.0
     init_values: Optional[float] = None  # Layer scale init values
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         """Validate configuration."""
-        assert self.depth > 0, "Depth must be positive"
-        assert self.embed_dim > 0, "Embedding dimension must be positive"
-        assert self.num_heads > 0, "Number of heads must be positive"
-        assert (
-            self.embed_dim % self.num_heads == 0
-        ), "Embed_dim must be divisible by num_heads"
+        validate_positive_number(self.depth, "depth")
+        validate_positive_number(self.embed_dim, "embed_dim")
+        validate_positive_number(self.num_heads, "num_heads")
+        validate_positive_number(self.mlp_ratio, "mlp_ratio")
+        validate_range(self.attn_drop_rate, 0.0, 1.0, "attn_drop_rate")
+        validate_range(self.proj_drop_rate, 0.0, 1.0, "proj_drop_rate")
+        validate_range(self.drop_path_rate, 0.0, 1.0, "drop_path_rate")
+
+        if self.embed_dim % self.num_heads != 0:
+            raise ValueError(
+                f"Embed_dim ({self.embed_dim}) must be divisible by num_heads ({self.num_heads})"
+            )
 
 
 @dataclass
@@ -70,13 +101,16 @@ class MultiScaleConfig:
     scale_token: str = "random"  # 'random' or 'channel'
     patch_attn: bool = True  # Whether to use patch attention
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         """Validate configuration."""
-        assert 2 <= self.num_layers <= 4, "num_layers must be between 2 and 4"
-        assert self.scale_token in [
-            "random",
-            "channel",
-        ], "scale_token must be 'random' or 'channel'"
+        validate_range(self.num_layers, 2, 4, "num_layers")
+        validate_positive_number(self.num_patches, "num_patches")
+        validate_positive_number(self.proj_dim, "proj_dim")
+
+        if self.scale_token not in ["random", "channel"]:
+            raise ValueError(
+                f"scale_token must be 'random' or 'channel', got {self.scale_token}"
+            )
 
 
 @dataclass
@@ -113,6 +147,32 @@ class TrainingConfig:
     patience: int = 20
     min_delta: float = 1e-4
 
+    def __post_init__(self) -> None:
+        """Validate configuration."""
+        validate_positive_number(self.learning_rate, "learning_rate")
+        validate_positive_number(self.weight_decay, "weight_decay")
+        validate_positive_number(self.epochs, "epochs")
+        validate_positive_number(self.batch_size, "batch_size")
+        validate_positive_number(self.warmup_epochs, "warmup_epochs", allow_zero=True)
+        validate_positive_number(self.patience, "patience", allow_zero=True)
+        validate_positive_number(self.save_freq, "save_freq")
+        validate_positive_number(self.keep_last_n, "keep_last_n")
+
+        validate_range(self.momentum, 0.0, 1.0, "momentum")
+        validate_range(self.label_smoothing, 0.0, 1.0, "label_smoothing")
+        validate_range(self.mixup_alpha, 0.0, 1.0, "mixup_alpha")
+        validate_range(self.cutmix_alpha, 0.0, 1.0, "cutmix_alpha")
+
+        if self.optimizer not in ["adam", "adamw", "sgd"]:
+            raise ValueError(
+                f"Invalid optimizer: {self.optimizer}. Must be 'adam', 'adamw', or 'sgd'"
+            )
+
+        if self.scheduler not in ["cosine", "step", "onecycle", None]:
+            raise ValueError(
+                f"Invalid scheduler: {self.scheduler}. Must be 'cosine', 'step', 'onecycle', or None"
+            )
+
 
 @dataclass
 class DataConfig:
@@ -141,6 +201,25 @@ class DataConfig:
     val_split: float = 0.15
     test_split: float = 0.15
 
+    def __post_init__(self) -> None:
+        """Validate configuration."""
+        validate_positive_number(self.num_classes, "num_classes")
+        validate_positive_number(self.image_size, "image_size")
+        validate_positive_number(
+            self.random_rotation, "random_rotation", allow_zero=True
+        )
+
+        validate_range(self.train_split, 0.0, 1.0, "train_split")
+        validate_range(self.val_split, 0.0, 1.0, "val_split")
+        validate_range(self.test_split, 0.0, 1.0, "test_split")
+        validate_range(self.brightness, 0.0, 1.0, "brightness")
+        validate_range(self.contrast, 0.0, 1.0, "contrast")
+
+        # Check that splits sum to 1.0
+        total_split = self.train_split + self.val_split + self.test_split
+        if abs(total_split - 1.0) > 1e-6:
+            raise ValueError(f"Data splits must sum to 1.0, got {total_split}")
+
 
 @dataclass
 class LoggingConfig:
@@ -160,6 +239,17 @@ class LoggingConfig:
     use_mlflow: bool = False
     mlflow_tracking_uri: str = "http://localhost:5000"
     mlflow_experiment_name: str = "refactored-duoformer"
+
+    def __post_init__(self) -> None:
+        """Validate configuration."""
+        validate_positive_number(self.log_interval, "log_interval")
+
+        # Validate paths exist or can be created
+        try:
+            self.log_dir.mkdir(parents=True, exist_ok=True)
+            self.tensorboard_dir.mkdir(parents=True, exist_ok=True)
+        except (OSError, PermissionError) as e:
+            raise ValueError(f"Cannot create logging directories: {e}")
 
 
 @dataclass
@@ -188,14 +278,14 @@ class ModelConfig:
     gpu_ids: Optional[str] = None  # Comma-separated GPU IDs (e.g., '0,1,2')
 
     @classmethod
-    def from_yaml(cls, yaml_path: str) -> "ModelConfig":
+    def from_yaml(cls, yaml_path: Union[str, Path]) -> "ModelConfig":
         """Load configuration from YAML file."""
         with open(yaml_path, "r") as f:
             config_dict = yaml.safe_load(f)
         return cls.from_dict(config_dict)
 
     @classmethod
-    def from_json(cls, json_path: str) -> "ModelConfig":
+    def from_json(cls, json_path: Union[str, Path]) -> "ModelConfig":
         """Load configuration from JSON file."""
         with open(json_path, "r") as f:
             config_dict = json.load(f)
@@ -210,7 +300,15 @@ class ModelConfig:
         multiscale = MultiScaleConfig(**config_dict.get("multiscale", {}))
         training = TrainingConfig(**config_dict.get("training", {}))
         data = DataConfig(**config_dict.get("data", {}))
-        logging = LoggingConfig(**config_dict.get("logging", {}))
+
+        # Convert string paths back to Path objects before creating LoggingConfig
+        logging_dict = config_dict.get("logging", {})
+        if isinstance(logging_dict.get("log_dir"), str):
+            logging_dict["log_dir"] = Path(logging_dict["log_dir"])
+        if isinstance(logging_dict.get("tensorboard_dir"), str):
+            logging_dict["tensorboard_dir"] = Path(logging_dict["tensorboard_dir"])
+
+        logging = LoggingConfig(**logging_dict)
 
         return cls(
             backbone=backbone,
@@ -231,12 +329,12 @@ class ModelConfig:
 
         return asdict(self)
 
-    def to_yaml(self, yaml_path: str):
+    def to_yaml(self, yaml_path: Union[str, Path]) -> None:
         """Save configuration to YAML file."""
         config_dict = self.to_dict()
 
         # Convert pathlib.Path objects to strings for YAML serialization
-        def convert_paths(obj):
+        def convert_paths(obj: Any) -> Any:
             if isinstance(obj, dict):
                 return {k: convert_paths(v) for k, v in obj.items()}
             elif isinstance(obj, list):
@@ -251,10 +349,49 @@ class ModelConfig:
         with open(yaml_path, "w") as f:
             yaml.dump(config_dict, f, default_flow_style=False)
 
-    def to_json(self, json_path: str):
+    def to_json(self, json_path: Union[str, Path]) -> None:
         """Save configuration to JSON file."""
         with open(json_path, "w") as f:
             json.dump(self.to_dict(), f, indent=2)
+
+    def validate_schema(self) -> None:
+        """Validate the entire configuration schema.
+
+        Performs comprehensive validation of all configuration parameters
+        including cross-parameter dependencies and constraints.
+
+        Raises:
+            ValidationError: If any configuration parameter is invalid
+            ConfigurationError: If configuration has logical inconsistencies
+        """
+        # Validate all sub-configurations
+        self.backbone.__post_init__()
+        self.transformer.__post_init__()
+        self.multiscale.__post_init__()
+        self.training.__post_init__()
+        self.data.__post_init__()
+        self.logging.__post_init__()
+
+        # Cross-parameter validation
+        if self.training.batch_size <= 0:
+            raise ValueError("Training batch_size must be positive")
+
+        if self.training.epochs <= 0:
+            raise ValueError("Training epochs must be positive")
+
+        if self.training.learning_rate <= 0:
+            raise ValueError("Training learning_rate must be positive")
+
+        # Validate model architecture constraints
+        if self.multiscale.num_layers < 2 or self.multiscale.num_layers > 4:
+            raise ValueError("Multi-scale num_layers must be between 2 and 4")
+
+        # Validate transformer constraints
+        if self.transformer.embed_dim % self.transformer.num_heads != 0:
+            raise ValueError(
+                f"Transformer embed_dim ({self.transformer.embed_dim}) "
+                f"must be divisible by num_heads ({self.transformer.num_heads})"
+            )
 
     def __str__(self) -> str:
         """String representation."""
