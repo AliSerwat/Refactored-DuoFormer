@@ -323,12 +323,8 @@ def create_dataloaders(
     # Random split
     generator = torch.Generator().manual_seed(seed)
     train_indices, val_indices, test_indices = random_split(
-        range(total_size), [train_size, val_size, test_size], generator=generator
+        full_dataset, [train_size, val_size, test_size], generator=generator
     )
-    # Type annotations for clarity
-    train_indices: Subset = train_indices
-    val_indices: Subset = val_indices
-    test_indices: Subset = test_indices
 
     # Create datasets with appropriate transforms
     train_dataset = Subset(full_dataset, train_indices)
