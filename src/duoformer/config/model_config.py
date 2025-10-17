@@ -232,13 +232,13 @@ class LoggingConfig:
 
     # Weights & Biases
     use_wandb: bool = False
-    wandb_project: str = "refactored-duoformer"
+    wandb_project: str = "duoformer"
     wandb_entity: Optional[str] = None
 
     # MLflow
     use_mlflow: bool = False
     mlflow_tracking_uri: str = "http://localhost:5000"
-    mlflow_experiment_name: str = "refactored-duoformer"
+    mlflow_experiment_name: str = "duoformer"
 
     def __post_init__(self) -> None:
         """Validate configuration."""

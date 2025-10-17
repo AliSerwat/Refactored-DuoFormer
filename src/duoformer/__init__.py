@@ -18,7 +18,7 @@ if sys.version_info < (3, 10):
         f"Please upgrade your Python installation."
     )
 
-__version__ = "1.1.0"
+__version__ = "2.0.0"
 __author__ = "AliSerwat"
 __email__ = "ali.serwat@example.com"
 __description__ = "Multi-Scale Vision Transformer for Medical Imaging"

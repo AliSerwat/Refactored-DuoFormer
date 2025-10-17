@@ -6,7 +6,7 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Code Quality](https://img.shields.io/badge/code%20quality-A+-success.svg)](docs/CODE_REVIEW_REPORT.md)
 
-**Production-ready, refactored implementation of DuoFormer for general medical image classification with enterprise-grade MLOps practices.**
+**Production-ready DuoFormer for general medical image classification with enterprise-grade MLOps practices.**
 
 - 💡 **Purpose**:
     - Refactored for general medical imaging use cases including histopathology, radiology, dermatology, and more
@@ -21,7 +21,7 @@
 
 ## ✨ What's New in This Enhanced Version
 
-This is a professionally refactored and enhanced version with:
+A professionally engineered and enhanced implementation with:
 
 - ✅ **Platform-Independent**: Works on Windows, Linux, macOS
 - ✅ **Hardware-Agnostic**: Auto-detects CUDA, MPS (Apple Silicon), or CPU
@@ -108,7 +108,7 @@ Predictions (num_classes)
 ## 📁 Project Structure
 
 ```
-refactored-duoformer/
+duoformer/
 │
 ├── 📄 README.md                      Main project documentation (you are here)
 ├── 📄 GETTING_STARTED.md             Comprehensive beginner's guide
@@ -472,7 +472,7 @@ python setup_environment.py
 
 ### General Medical Image Classification
 
-This refactored version works with various medical imaging modalities:
+This implementation works with various medical imaging modalities:
 
 ```python
 # Histopathology (e.g., TCGA, CAMELYON)
@@ -561,13 +561,13 @@ Same license as original repository.
 - **Code Health**: `python scripts/health_check.py`
 - **Examples**: See `examples/` directory
 
-**Note**: This is a refactored version for general medical imaging. For the original TCGA-specific implementation, see [xiaoyatang/duoformer_TCGA](https://github.com/xiaoyatang/duoformer_TCGA)
+**Note**: For the original TCGA-specific implementation, see [xiaoyatang/duoformer_TCGA](https://github.com/xiaoyatang/duoformer_TCGA)
 
 ---
 
 ## ⭐ Features Comparison
 
-| Feature | Original | Enhanced |
+| Feature | Original | DuoFormer |
 |---------|----------|----------|
 | **Code Quality** | Wildcards, deprecated | Explicit, modern ✅ |
 | **Platform** | Linux-only paths | Cross-platform ✅ |

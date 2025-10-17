@@ -80,9 +80,9 @@ logging:
   tensorboard_dir: ./runs
   log_interval: 10
   use_wandb: false
-  wandb_project: refactored-duoformer
+  wandb_project: duoformer
   wandb_entity: null
   use_mlflow: false
   mlflow_tracking_uri: http://localhost:5000
-  mlflow_experiment_name: refactored-duoformer
+  mlflow_experiment_name: duoformer
 
